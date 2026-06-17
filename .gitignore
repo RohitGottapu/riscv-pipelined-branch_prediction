@@ -1,0 +1,38 @@
+# Ignore Vivado generated folders (matches risc_v_bp_pc.runs, etc.)
+*.runs/
+*.sim/
+*.cache/
+*.hw/
+*.ip_user_files/
+.Xil/
+
+# Ignore Vivado project files, logs, reports, and waveforms
+*.xpr
+*.jou
+*.log
+*.pb
+*.wdb
+*.dir/
+*.str
+*.wcfg
+power_report_vectorless.txt
+
+# Ignore simulation waveforms and compiled objects
+*.vcd
+*.fsdb
+*.o
+*.out
+
+# Ignore OS generated files
+.DS_Store
+Thumbs.db
+
+# Ignore specific testbenches and wrapper files (the blue files)
+btb_inst.v
+module_wise_tb.v
+risc_wrapper.sv
+tb.v
+tb_test.sv
+
+# Ignore personal extra folders
+gemini_upload_files/

@@ -82,14 +82,15 @@ end
 
 
 assign stall_ex = 1'b0; assign  flush_ex=1'b0; assign stall_mem = 1'b0;
-assign flush_mem = 1'b0; assign stall_id=1'b0; assign stall_if=1'b0;
+assign flush_mem = 1'b0; assign stall_id=1'b0;
+// assign stall_if=1'b0;
 
-// wire flush_id_hazard;
-assign flush_id=(mispredict_flush_id  );
+ wire flush_id_hazard;
+assign flush_id=(mispredict_flush_id|flush_id_hazard  );
 
 //    assign is_ex_instr_sw = (id_out.instr[6:0]==7'b0000011)&(id_out.instr[14:12]==3'b010); // opcode and func3 matching for det lw instr 
-//    rv32i_hazard_det hazard_det_inst (.id_ex_mem_read(id_out.result_src),.id_ex_rd(id_out.rd),.if_id_rs1(if_out.instr[19:15]),.if_id_rs2(if_out.instr[24:20]),.stall_if(stall_if),
-//                                    .flush_id(flush_id_hazard));
+    rv32i_hazard_det hazard_det_inst (.id_ex_mem_read(id_out.result_src),.id_ex_rd(id_out.rd),.if_id_rs1(if_out.instr[19:15]),.if_id_rs2(if_out.instr[24:20]),.stall_if(stall_if),
+                                    .flush_id(flush_id_hazard));
 
 
 ///

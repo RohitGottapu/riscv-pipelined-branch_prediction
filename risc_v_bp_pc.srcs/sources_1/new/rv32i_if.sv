@@ -102,18 +102,22 @@ module rv32i_if import rv32i_pkg::*; (
     // --- 3. Combinational Struct Packing ---
  
     always_ff @(posedge clk) begin
-        if (mispredict_flush_id) begin
-            if_out_id.valid <= 1'b0; 
+        if (reset) begin
+            if_out_id <= '0;
+        end else if (mispredict_flush_id) begin
+            if_out_id <= '0; // Insert NOP on branch flush
+        end else if (stall_if) begin
+            if_out_id <= if_out_id; // HOLD STATE: Keep the current instruction in ID!
         end else begin
-            if_out_id.valid <= 1'b1;
+            if_out_id.valid            <= 1'b1;
+            if_out_id.pc               <= pc_reg;
+            if_out_id.predicted_taken  <= gshare_predict_wire;
+            if_out_id.predicted_target <= btb_target_wire;
+            if_out_id.bhr_snapshot     <= gshare_bhr_wire;
+            if_out_id.btb_hit_wire     <= btb_hit_wire;
+            if_out_id.instr            <= imem_inst_wire;
         end
-        if_out_id.pc              <= pc_reg;
-        if_out_id.predicted_taken  <= gshare_predict_wire;
-        if_out_id.predicted_target <= btb_target_wire;
-        if_out_id.bhr_snapshot     <= gshare_bhr_wire;
-        if_out_id.btb_hit_wire         <= btb_hit_wire;
-        if_out_id.instr  <= imem_inst_wire;
-        end
+    end
     
 
 endmodule
